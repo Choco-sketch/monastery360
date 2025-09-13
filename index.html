@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Mountain Monastery</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f4e9;
+            color: #4a3c2a;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: #5a7155;
+            color: #f8f4e9;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            background-color: #6b845d;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        
+        nav a {
+            color: #f8f4e9;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #5a7155;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1, h2, h3 {
+            color: #4a3c2a;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: #5a7155;
+            border-bottom: 2px solid #e8e1d1;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 250px;
+            position: relative;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        #map {
+            height: 400px;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .coin-system {
+            background-color: #e8e1d1;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .coin-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #b89b66;
+            margin: 1rem 0;
+        }
+        
+        .upload-area {
+            border: 2px dashed #b89b66;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            background-color: rgba(184, 155, 102, 0.1);
+        }
+        
+        .btn {
+            background-color: #b89b66;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #a58a5a;
+        }
+        
+        .live-session {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .session-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .session-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .session-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        footer {
+            background-color: #4a3c2a;
+            color: #f8f4e9;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sacred Mountain Monastery</h1>
+        <p>Experience Peace, Wisdom, and Serenity</p>
+    </header>
+    
+    <nav>
+        <a href="#gallery">Gallery</a>
+        <a href="#map-section">Location</a>
+        <a href="#coins">Earn Coins</a>
+        <a href="#sessions">Live Sessions</a>
+    </nav>
+    
+    <div class="container">
+        <section class="section" id="gallery">
+            <h2>Monastery Gallery</h2>
+            <p>Explore the beauty and tranquility of our monastery through these images.</p>
+            
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Monastery Exterior">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1580502304784-8985b7eb7260?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Prayer Hall">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1551524165-14a7ab6c82a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Meditation Garden">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1596962247341-3b21bbd699,6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Ancient Scriptures">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1580502304784-8985b7eb7260?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Monk in Meditation">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Mountain View">
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="map-section">
+            <h2>Our Location</h2>
+            <p>Find your way to our peaceful monastery nestled in the mountains.</p>
+            
+            <div id="map"></div>
+        </section>
+        
+        <section class="section" id="coins">
+            <h2>Earn Redeemable Coins</h2>
+            <p>Share your experience with us and earn coins that can be redeemed at local shops or in partner apps.</p>
+            
+            <div class="coin-system">
+                <h3>Upload Your Monastery Selfie</h3>
+                <p>For each verified selfie at our monastery, you'll earn 5 coins!</p>
+                
+                <div class="coin-count">Your Coins: <span id="coin-count">0</span></div>
+                
+                <div class="upload-area" id="upload-area">
+                    <p>Click here or drag and drop your selfie</p>
+                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                </div>
+                
+                <button class="btn" id="upload-btn">Upload Photo</button>
+                
+                <div id="upload-status" style="margin-top: 1rem;"></div>
+            </div>
+        </section>
+        
+        <section class="section" id="sessions">
+            <h2>Live Sessions with Monks</h2>
+            <p>Join our monks for meditation, teachings, and Q&A sessions.</p>
+            
+            <div class="live-session">
+                <div class="session-info">
+                    <h3>Weekly Meditation Guidance</h3>
+                    <p>Every Saturday at 10:00 AM</p>
+                    <p>Join our experienced monks for guided meditation sessions. Learn techniques that have been practiced for centuries.</p>
+                    
+                    <h3>WisTeachings & Q&A</h3>
+                    <p>Every Wednesday at 4:00 PM</p>
+                    <p>Ask questions about mindfulness, Buddhist philosophy, or daily practice.</p>
+                    
+                    <button class="btn">Schedule a Private Session</button>
+                </div>
+                
+                <div class="session-image">
+                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Monk in meditation">
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Sacred Mountain Monastery © 2023 | Peace and Wisdom for All</p>
+        <p>Contact: info@sacredmountain.org | Phone: +123 456 7890</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        function initMap() {
+            // Default coordinates (you can replace with the actual monastery coordinates)
+            const monasteryCoords = [27.7172, 85.3240]; // Example: Kathmandu coordinates
+            
+            const map = L.map('map').setView(monasteryCoords, 15);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            L.marker(monasteryCoords)
+                .addTo(map)
+                .bindPopup('Sacred Mountain Monastery<br>Place of peace and wisdom.')
+                .openPopup();
+        }
+        
+        // Initialize coin system
+        function initCoinSystem() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            const uploadStatus = document.getElementById('upload-status');
+            const coinCountElement = document.getElementById('coin-count');
+            
+            let coinCount = 0;
+            
+            // Handle drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = 'rgba(184, 155, 102, 0.2)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.backgroundColor = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length) {
+                    handleImageUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Handle click on upload area
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleImageUpload(fileInput.files[0]);
+                }
+            });
+            
+            // Handle upload button click
+            uploadBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Process image upload
+            function handleImageUpload(file) {
+                if (!file.type.match('image.*')) {
+                    uploadStatus.textContent = 'Please upload an image file.';
+                    uploadStatus.style.color = 'red';
+                    return;
+                }
+                
+                // Simulate upload process
+                uploadStatus.textContent = 'Uploading and verifying your selfie...';
+                uploadStatus.style.color = 'blue';
+                
+                setTimeout(() => {
+                    // Simulate successful verification
+                    coinCount += 5;
+                    coinCountElement.textContent = coinCount;
+                    
+                    uploadStatus.textContent = 'Success! Your selfie has been verified. 5 coins added to your account.';
+                    uploadStatus.style.color = 'green';
+                    
+                    // Generate and display QR code (simulated)
+                    uploadStatus.innerHTML += '<p>Your coin QR code: <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=MONASTERYCOIN-' + coinCount + '" alt="QR Code" style="margin-left: 10px; vertical-align: middle;"></p>';
+                    uploadStatus.innerHTML += '<p>Show this QR code at participating shops or apps to redeem your coins.</p>';
+                }, 2000);
+            }
+        }
+        
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            initCoinSystem();
+        });
+    </script>
+</body>
+</html>
