@@ -167,10 +167,10 @@
         <section id="gallery">
             <h2>Monastery Gallery</h2>
             <div class="gallery">
-                <img src="./image/monastery1.jpg" alt="Monastery 1">
-                <img src="./image/monastery2.jpg" alt="Monastery 2">
-                <img src="./image/monastery3.jpg" alt="Monastery 3">
-                <img src="./image/monastery4.jpg" alt="Monastery 4">
+                <img src="monastery1.jpg" alt="Monastery 1">
+                <img src="monastery2.jpg" alt="Monastery 2">
+                <img src="monastery3.jpg" alt="Monastery 3">
+                <img src="monastery4.jpg" alt="Monastery 4">
             </div>
             <button id="see-more"
                 style="margin-top:20px; padding:10px 20px; border:none; border-radius:8px; background:#8a6d3b; color:white; cursor:pointer;">See
@@ -195,22 +195,24 @@
         <p>© 2025 Sacred Mountain Monastery | Peace and Harmony</p>
     </footer>
 
+    <!-- Modal for gallery -->
     <div id="galleryModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Extended Monastery Gallery</h2>
-            <img src="image/monastery5.jpg" alt="Monastery 5">
-            <img src="image/monastery6.jpg" alt="Monastery 6">
-            <img src="image/monastery7.jpg" alt="Monastery 7">
-            <img src="image/monastery8.jpg" alt="Monastery 8">
-            <img src="image/monastery9.jpg" alt="Monastery 9">
-            <img src="image/monastery10.jpg" alt="Monastery 10">
-            <img src="image/monastery11.jpg" alt="Monastery 11">
+            <img src="monastery5.jpg" alt="Monastery 5">
+            <img src="monastery6.jpg" alt="Monastery 6">
+            <img src="monastery7.jpg" alt="Monastery 7">
+            <img src="monastery8.jpg" alt="Monastery 8">
+            <img src="monastery9.jpg" alt="Monastery 9">
+            <img src="monastery10.jpg" alt="Monastery 10">
+            <img src="monastery11.jpg" alt="Monastery 11">
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+        // Initialize map
         function initMap() {
             const monasteryCoords = [27.7172, 85.3240]; // Example: Kathmandu
             const map = L.map('map').setView(monasteryCoords, 15);
@@ -230,6 +232,7 @@
             }, 2000);
         }
 
+        // Initialize coin system
         function initCoinSystem() {
             const uploadArea = document.getElementById('upload-area');
             const fileInput = document.getElementById('file-input');
@@ -239,6 +242,7 @@
 
             let coinCount = 0;
 
+            // Handle image upload
             function handleImage(file) {
                 if (file && file.type.startsWith("image/")) {
                     coinCount += 5;
@@ -294,4 +298,5 @@
         };
     </script>
 </body>
-</htm
+
+</html>
